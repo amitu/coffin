@@ -80,8 +80,14 @@ class CoffinEnvironment(Environment):
         register all libraries globally.
         """
         from django.conf import settings
-        from django.template import (
-            get_library, import_library, InvalidTemplateLibrary)
+        try:
+            from django.template import (
+                get_library, import_library, InvalidTemplateLibrary
+            )
+        except ImportError:
+            from django.template.base import (
+                get_library, import_library, InvalidTemplateLibrary
+            )
 
         libs = []
         for app in settings.INSTALLED_APPS:
@@ -113,8 +119,12 @@ class CoffinEnvironment(Environment):
 
     def _get_all_extensions(self):
         from django.conf import settings
-        from django.template import builtins as django_builtins
-        from coffin.template import builtins as coffin_builtins
+        try:
+            from django.template import builtins as django_builtins
+            from coffin.template import builtins as coffin_builtins
+        except ImportError:
+            from django.template.base import builtins as django_builtins
+            from coffin.template.base import builtins as coffin_builtins
         from django.core.urlresolvers import get_callable
 
         # Note that for extensions, the order in which we load the libraries
