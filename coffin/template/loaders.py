@@ -24,7 +24,11 @@ def _make_jinja_app_loader():
     """Makes an 'app loader' for Jinja which acts like
     :mod:`django.template.loaders.app_directories`.
     """
-    from django.template.loaders.app_directories import app_template_dirs
+    try:
+        from django.template.loaders.app_directories import app_template_dirs
+    except ImportError:
+        from django.template.utils import get_app_template_dirs
+        app_template_dirs = get_app_template_dirs('templates')
     return loaders.FileSystemLoader(app_template_dirs)
 
 
