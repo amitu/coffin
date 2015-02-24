@@ -14,7 +14,11 @@ from jinja2.runtime import Context as _Jinja2Context
 # Merge with ``django.template``.
 from django.template import __all__
 from django.template import *
-from django.template import Origin
+try:
+    from django.template import Origin
+except ImportError:
+    from django.template.base import Origin
+
 from django.test import signals
 
 # Override default library class with ours
