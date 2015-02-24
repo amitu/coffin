@@ -1,8 +1,13 @@
-from django.template import (
-    Context as DjangoContext,
-    add_to_builtins as django_add_to_builtins,
-    import_library,
-)
+from django.template import Context as DjangoContext
+
+try:
+    from django.template import add_to_builtins as django_add_to_builtins
+except ImportError:
+    from django.template.base import add_to_builtins as django_add_to_builtins
+    from django.template.base import import_library
+else:
+    from django.template import import_library
+
 from jinja2 import Template as _Jinja2Template
 from jinja2.runtime import Context as _Jinja2Context
 
